@@ -1,0 +1,21 @@
+.DS_Store
+*.pyc
+*.pyo
+db_repository
+app.db
+env
+env*
+venv
+build
+*.egg
+*.egg-info
+_mailinglist
+.tox
+.cache/
+.idea/
+
+# Coverage reports
+htmlcov
+.coverage
+.coverage.*
+*,cover

@@ -1,0 +1,48 @@
+  <span class="loader" id="result"></span>
+    <span id="signInButton">
+    <span class="g-signin"
+      data-scope="openid email"
+      data-clientid="421632806905-4u86hb1lcuvgj90osvujglaetht5v4sq.apps.googleusercontent.com"
+      data-redirecturi="postmessage"
+      data-accesstype="offline"
+      data-cookiepolicy="single_host_origin"
+      data-callback="signInCallback"
+      data-approvalprompt="force">
+    </span>
+  </span>
+  <script>
+  var csrf_token = "{{ csrf_token() }}";
+  function signInCallback(authResult) {
+    if (authResult['code']) {
+      // Hide the sign-in button now that the user is authorized
+      $('#signInButton').attr('style', 'display: none');
+      $('#result').attr('style', 'display: block');
+      // Send the one-time-use code to the server, if the server responds, write a 'login successful' message to the web page and then redirect back to the main restaurants page
+      $.ajax({
+        type: 'POST',
+        url: '{{url_for('gconnect')}}',
+        processData: false,
+        data: authResult['code'],
+        contentType: 'application/octet-stream; charset=utf-8',
+        beforeSend: function(xhr, settings) {
+          if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+            xhr.setRequestHeader("X-CSRFToken", csrf_token);
+          }
+        },
+        success: function(result) {
+          // Handle or verify the server response if necessary.
+          if (result) {
+            $('#result').html('Login Successful!</br>'+ result + '</br>Redirecting...')
+           setTimeout(function() {
+            window.location.href = "{{url_for('catalog.recentItems')}}";
+          }, 2000);
+
+        } else if (authResult['error']) {
+      console.log('There was an error: ' + authResult['error']);
+    } else {
+          $('#result').html('Failed to make a server-side call. Check your configuration and console.');
+           }
+        }
+
+    }); } }
+  </script>

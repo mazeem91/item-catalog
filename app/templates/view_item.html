@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="panel-heading">
+  <span class="panel-title">{{item.name}}</span>
+
+    <a href="#" class="btn btn-danger btn-xs">
+      <span class="glyphicon glyphicon-minus"></span></a>
+    <a href="#" class="btn btn-warning btn-xs">
+      <span class="glyphicon glyphicon-pencil"></span></a>
+
+  <span class="label label-default pull-right">{{item.category.name}}</span>
+</div>
+<div class="panel-body">
+  <p>{{item.description}}</p>
+
+</div>
+{% endblock %}
