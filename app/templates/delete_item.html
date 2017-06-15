@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="panel-heading">
+  <span class="panel-title">Delete item: {{item.name}}</span>
+
+
+</div>
+<div class="panel-body">
+  <form method="post">
+    {{item_form.csrf_token}}
+    {% if item_form.errors %}
+      {% if 'csrf_token' in item_form.errors %}
+        {{item_form.errors['csrf_token'][0]}}
+      {% endif %}
+    {% endif %}
+
+<div class="form-group">
+  Are you sure to delete {{item.name}} :
+
+
+</div>
+<a href="{{url_for('catalog.viewItem',category_name=item.category.name, item_name=item.name)}}" class="btn btn-default">cancel</a>
+    <button type="submit" class="btn btn-danger">DELETE</button>
+  </form>
+  <br>
+</div>
+{% endblock %}

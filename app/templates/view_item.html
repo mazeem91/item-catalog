@@ -1,16 +1,16 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="panel-heading">
-  <span class="panel-title">{{item.name}}</span>
+  <span class="panel-title">Item: {{item.name}}</span>
 
-    <a href="#" class="btn btn-danger btn-xs">
-      <span class="glyphicon glyphicon-minus"></span></a>
-    <a href="#" class="btn btn-warning btn-xs">
-      <span class="glyphicon glyphicon-pencil"></span></a>
-
-  <span class="label label-default pull-right">{{item.category.name}}</span>
+    <a href="{{url_for('catalog.deleteItem', category_name=item.category.name, item_name=item.name)}}" class="btn btn-danger btn-xs">
+      Delete <span class="glyphicon glyphicon-minus"></span></a>
+    <a href="{{url_for('catalog.editItem', category_name=item.category.name, item_name=item.name)}}" class="btn btn-warning btn-xs">
+      Edit <span class="glyphicon glyphicon-pencil"></span></a>
+      <span class="label label-default pull-right">{{item.category.name}}</span>
+      <span class="pull-right"> Category: </span>
 </div>
-<div class="panel-body">
+<div class="panel-body"><h4>Description:</h4>
   <p>{{item.description}}</p>
 
 </div>

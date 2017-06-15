@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="panel-heading">
+  <span class="panel-title">Delete category: {{category.name}}</span>
+
+
+</div>
+<div class="panel-body">
+  <form method="post">
+    {{category_form.csrf_token}}
+    {% if category_form.errors %}
+      {% if 'csrf_token' in category_form.errors %}
+        {{category_form.errors['csrf_token'][0]}}
+      {% endif %}
+    {% endif %}
+
+<div class="form-group">
+  Are you sure to delete {{category.name}} and all of its items :
+<ul>
+
+  {% for item in category.items %}
+  <li>{{item.name}}</li>
+  {% endfor %}
+</ul>
+</div>
+<a href="{{url_for('catalog.viewCategory', category_name=category.name)}}" class="btn btn-default">cancel</a>
+    <button type="submit" class="btn btn-danger">DELETE</button>
+  </form>
+  <br>
+</div>
+
+
+{% endblock %}

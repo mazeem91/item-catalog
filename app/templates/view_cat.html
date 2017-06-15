@@ -1,15 +1,22 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="panel-heading">
-  <span class="panel-title">{{items[0].category.name}}  </span>
-    <a href="#" class="btn btn-danger btn-xs">
-      <span class="glyphicon glyphicon-minus"></span></a>
-    <a href="#" class="btn btn-warning btn-xs">
-      <span class="glyphicon glyphicon-pencil"></span></a>
+  <span class="panel-title">{{category.name}} - Items</span>
+    <a href="{{url_for('catalog.deleteCategory', category_name=category.name)}}" class="btn btn-danger btn-xs">
+      Delete category <span class="glyphicon glyphicon-minus"></span></a>
+    <a href="{{url_for('catalog.editCategory', category_name=category.name)}}" class="btn btn-warning btn-xs">
+      Edit category <span class="glyphicon glyphicon-pencil"></span></a>
+      <a href="{{url_for('catalog.createItem', category_name=category.name)}}" class="btn btn-success btn-xs pull-right">
+        Add Item <span class="glyphicon glyphicon-plus"></span></a>
+
 </div>
+<div class="panel-body">
 
-
+{% if not items %}
+<h4>No items yet !</h4>
+{% endif %}
   <ul class="list-group">
+
     {% for item in items %}
     <li class="list-group-item">
    <a href="{{url_for('catalog.viewItem', category_name=item.category.name, item_name=item.name)}}">{{item.name}}</a>
@@ -17,4 +24,5 @@
     {% endfor %}
 
   </ul>
+</div>
 {% endblock %}

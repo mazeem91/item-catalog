@@ -28,7 +28,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Project name</a>
+          <a class="navbar-brand" href="{{url_for('index')}}">Item Catalog</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
 
@@ -49,8 +49,8 @@
         <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar">
           <div class="list-group">
             <span class="list-group-item list-group-item-success">Categories
-              <a href="#" class="btn btn-warning btn-xs pull-right">
-                <span class="glyphicon glyphicon-plus"></span></a>
+              <a href="{{url_for('catalog.createCategory')}}" class="btn btn-success btn-xs pull-right">
+                Add <span class="glyphicon glyphicon-plus"></span></a>
             </span>
 
             {% for cat in g.categories %}

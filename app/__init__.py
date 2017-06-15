@@ -28,7 +28,7 @@ def check_csrf():
 
 
 @app.route('/')
-def reroute():
+def index():
     return redirect(url_for('catalog.recentItems'))
 
 
