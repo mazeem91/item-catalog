@@ -10,7 +10,7 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///catalog.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
-# enabling csrf protect for selected endpoints only
+# implmenting csrf protect for selected endpoints only
 app.config['WTF_CSRF_CHECK_DEFAULT'] = False
 csrf = CSRFProtect(app)
 
@@ -22,14 +22,14 @@ app.register_blueprint(api, url_prefix='/api')
 app.register_blueprint(catalog, url_prefix='/catalog')
 
 
-# protecting gconnect, gdisconnect from csrf
+# protecting gconnect, gdisconnect against csrf
 @app.before_request
 def check_csrf():
     if request.endpoint in ['gconnect', 'gdisconnect']:
         csrf.protect()
 
 
-# handling invalid/missing csrf token
+# handling invalid/missing csrf token errors
 @app.errorhandler(CSRFError)
 def csrf_error(reason):
     response = make_response(json.dumps(reason.description), 401)
