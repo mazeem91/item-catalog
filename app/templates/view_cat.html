@@ -1,13 +1,19 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="panel-heading">
-  <span class="panel-title">{{category.name}} - Items</span>
+  <span class="panel-title"><span class="glyphicon glyphicon-th-list"></span> {{category.name}}</span>
+  {% if 'user_id' in session %}
+  {% if session['user_id'] == category.user_id %}
+
     <a href="{{url_for('catalog.deleteCategory', category_name=category.name)}}" class="btn btn-danger btn-xs">
       Delete category <span class="glyphicon glyphicon-minus"></span></a>
     <a href="{{url_for('catalog.editCategory', category_name=category.name)}}" class="btn btn-warning btn-xs">
       Edit category <span class="glyphicon glyphicon-pencil"></span></a>
       <a href="{{url_for('catalog.createItem', category_name=category.name)}}" class="btn btn-success btn-xs pull-right">
         Add Item <span class="glyphicon glyphicon-plus"></span></a>
+        {% endif %}
+        {% endif %}
+
 
 </div>
 <div class="panel-body">
@@ -19,10 +25,12 @@
 
     {% for item in items %}
     <li class="list-group-item">
-   <a href="{{url_for('catalog.viewItem', category_name=item.category.name, item_name=item.name)}}">{{item.name}}</a>
+   <a href="{{url_for('catalog.viewItem', category_name=item.category.name, item_name=item.name)}}"><span class="glyphicon glyphicon-file"></span>{{item.name}}</a>
     </li>
     {% endfor %}
 
   </ul>
+  <span class="label label-default pull-right"> <span class="glyphicon glyphicon-user"></span> {{category.user.name}} </span>
+
 </div>
 {% endblock %}

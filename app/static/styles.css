@@ -88,9 +88,15 @@ font-size: 100%;
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
-#g_login{
-      margin-bottom: 0px;
+#auth{
+      margin-bottom: 0;
 }
 textarea {
    resize: none;
+}
+.signout {
+  margin: 0;
+}
+.center{
+  text-align: center;
 }

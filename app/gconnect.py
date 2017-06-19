@@ -7,8 +7,6 @@ from oauth2client.client import flow_from_clientsecrets
 
 class GoolgleLogin():
     def Connect(self, code):
-
-        # code = request.data
         try:
             # Upgrade the authorization code into a credentials object
             authflow = flow_from_clientsecrets('client_secrets.json', scope='')
@@ -40,20 +38,20 @@ class GoolgleLogin():
 
         return self.credentials, 200
 
-        # stored_credentials = login_session.get('access_token')
-        # stored_gplus_id = login_session.get('gplus_id')
-        # if stored_credentials and gplus_id == stored_gplus_id:
-        #     return 'user is already connected.', 200
-
-        # login_session['access_token'] = credentials.access_token
-        # login_session['gplus_id'] = gplus_id
-
-    def GetInfo():
+    def GetInfo(self):
         # Get user info
         userinfo_url = "https://www.googleapis.com/oauth2/v1/userinfo"
         params = {'access_token': self.credentials.access_token, 'alt': 'json'}
         data = requests.get(userinfo_url, params=params).json()
         return data
-        # login_session['username'] = data['name']
-        # login_session['picture'] = data['picture']
-        # login_session['email'] = data['email']
+
+    def Disconnect(self, access_token):
+        if not access_token:
+            return 'Currentuser not connected.', 401
+        url = 'https://accounts.google.com/o/oauth2/revoke?token=%s'\
+            % access_token
+        h = httplib2.Http()
+        result = h.request(url, 'GET')[0]
+        if result['status'] != '200':
+            return 'Failed to revoke token for given user.', 400
+        return 'done', 200
