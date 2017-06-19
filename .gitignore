@@ -2,7 +2,7 @@
 *.pyc
 *.pyo
 db_repository
-app.db
+*.db
 env
 env*
 venv

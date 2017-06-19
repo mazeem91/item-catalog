@@ -10,24 +10,26 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///catalog.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
-
+# enabling csrf protect for selected endpoints only
 app.config['WTF_CSRF_CHECK_DEFAULT'] = False
 csrf = CSRFProtect(app)
 
 from api import api
 from catalog import catalog
 from models import Category, Item, User
-
+# implmenting Blueprints for api and web app
 app.register_blueprint(api, url_prefix='/api')
 app.register_blueprint(catalog, url_prefix='/catalog')
 
 
+# protecting gconnect, gdisconnect from csrf
 @app.before_request
 def check_csrf():
     if request.endpoint in ['gconnect', 'gdisconnect']:
         csrf.protect()
 
 
+# handling invalid/missing csrf token
 @app.errorhandler(CSRFError)
 def csrf_error(reason):
     response = make_response(json.dumps(reason.description), 401)
@@ -43,18 +45,18 @@ def index():
 @app.route('/gconnect', methods=['POST'])
 def gconnect():
     glogin = GoolgleLogin()
+    # validate token through googlelogin api
     google_resp = glogin.Connect(request.data)
     if google_resp[1] != 200:
         response = make_response(json.dumps(google_resp[0]), google_resp[1])
         response.headers['Content-Type'] = 'application/json'
         return response
-
+    # getting user info
     userinfo = glogin.GetInfo()
-
     user_id = getUserID(userinfo['email'])
     if not user_id:
         user_id = createUser(userinfo)
-
+    # adding user to session
     session['user_id'] = user_id
     session['username'] = userinfo['name']
     session['picture'] = userinfo['picture']

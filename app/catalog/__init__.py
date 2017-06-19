@@ -9,6 +9,7 @@ from flask import Blueprint, render_template, g, request, redirect, url_for,\
 catalog = Blueprint('catalog', __name__)
 
 
+# checking for existing of requested category
 def check_category_exists(f):
     @wraps(f)
     def wrapper(*args, **kwds):
@@ -21,6 +22,7 @@ def check_category_exists(f):
     return wrapper
 
 
+# checking user logged or not
 def check_user_logged(f):
     @wraps(f)
     def wrapper(*args, **kwds):
@@ -31,6 +33,7 @@ def check_user_logged(f):
     return wrapper
 
 
+# checking user permission
 def check_item_owner(f):
     @wraps(f)
     def wrapper(*args, **kwds):
@@ -47,6 +50,7 @@ def check_item_owner(f):
     return wrapper
 
 
+# checking user permission
 def check_category_owner(f):
     @wraps(f)
     def wrapper(*args, **kwds):
@@ -62,6 +66,7 @@ def check_category_owner(f):
     return wrapper
 
 
+# checking for existing of requested item
 def check_item_exists(f):
     @wraps(f)
     def wrapper(*args, **kwds):
@@ -79,8 +84,9 @@ def check_item_exists(f):
     return wrapper
 
 
+# getting query of categories for side menu
 @app.before_request
-def dbQuery():
+def categoryQuery():
     g.categories = db.session.query(Category).all()
 
 

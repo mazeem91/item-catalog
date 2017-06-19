@@ -15,7 +15,13 @@ class Category(db.Model):
     name = db.Column(db.String(128), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     user = db.relationship('User')
-
+    @property
+    def serialize(self):
+        return {
+        'id'        :   self.id,
+        'name'      :   self.name,
+        'creator'   :   self.user.name,
+        'items'     :   [item.serialize['name'] for item in self.items]}
 
 class Item(db.Model):
     __tablename__ = 'items'
@@ -27,3 +33,10 @@ class Item(db.Model):
         'items', lazy='dynamic'))
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     user = db.relationship('User', backref=db.backref('items', lazy='dynamic'))
+    @property
+    def serialize(self):
+        return {
+        'id'        :   self.id,
+        'name'      :   self.name,
+        'creator'   :   self.user.name,
+        'category'  :   self.category.name}

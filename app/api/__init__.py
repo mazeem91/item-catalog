@@ -1,4 +1,6 @@
 from flask import Blueprint, jsonify
+from app import db
+from app.models import Category, Item
 
 api = Blueprint('api', __name__)
 
@@ -17,7 +19,7 @@ def menuItemJSON(restaurant_id, menu_id):
     return jsonify(Menu_Item=Menu_Item.serialize)
 
 
-@api.route('/restaurant/JSON')
+@api.route('/categories.json')
 def restaurantsJSON():
-    restaurants = session.query(Restaurant).all()
-    return jsonify(restaurants=[r.serialize for r in restaurants])
+    categories = db.session.query(Category).all()
+    return jsonify(categories=[r.serialize for r in categories])
