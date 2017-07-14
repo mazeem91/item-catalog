@@ -1,15 +1,19 @@
+import os
 import json
 import requests
 import httplib2
 from oauth2client.client import FlowExchangeError
 from oauth2client.client import flow_from_clientsecrets
 
+HERE = os.path.dirname(__file__)
+
 
 class GoolgleLogin():
     def Connect(self, code):
         try:
             # Upgrade the authorization code into a credentials object
-            authflow = flow_from_clientsecrets('client_secrets.json', scope='')
+            authflow = flow_from_clientsecrets(
+                os.path.join(HERE, 'client_secrets.json'), scope='')
             authflow.redirect_uri = 'postmessage'
             self.credentials = authflow.step2_exchange(code)
         except FlowExchangeError:
@@ -31,8 +35,8 @@ class GoolgleLogin():
             return "Token's user ID doesn't match given user ID.", 401
 
         # Verify that the access token is valid for this app.
-        client_id = json.loads(
-            open('client_secrets.json', 'r').read())['web']['client_id']
+        client_id = json.loads(open(os.path.join(
+            HERE, 'client_secrets.json'), 'r').read())['web']['client_id']
         if result['issued_to'] != client_id:
             return "Token's client ID does not match app's.", 401
 

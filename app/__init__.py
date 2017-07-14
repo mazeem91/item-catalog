@@ -9,6 +9,7 @@ app = Flask(__name__)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///catalog.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SECRET_KEY'] = 'super_secret_key'
 db = SQLAlchemy(app)
 # implmenting csrf protect for selected endpoints only
 app.config['WTF_CSRF_CHECK_DEFAULT'] = False
